@@ -12,7 +12,11 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 import * as SecureStore from "expo-secure-store";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const queryClient = new QueryClient();
+
+// Cache the Clerk JWT
 const tokenCache = {
   async getToken(key: string) {
     try {
@@ -79,7 +83,8 @@ const InitialLayout = () => {
     //   router.replace("/");
     // }
 
-    router.replace("verify/(authenticated)/(tabs)/home");
+    // router.replace("verify/(authenticated)/(tabs)/home");
+    router.replace("verify/(authenticated)/(tabs)/crypto");
   }, [isSignedIn]);
 
   if (!loaded || !isLoaded) {
@@ -178,10 +183,12 @@ const RootLayoutNav = () => {
       publishableKey={CLERK_PUBLISHABLE_KEY!}
       tokenCache={tokenCache}
     >
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <StatusBar style="light" />
-        <InitialLayout />
-      </GestureHandlerRootView>
+      <QueryClientProvider client={queryClient}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <StatusBar style="light" />
+          <InitialLayout />
+        </GestureHandlerRootView>
+      </QueryClientProvider>
     </ClerkProvider>
   );
 };
