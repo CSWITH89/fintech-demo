@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  Touchable,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { BlurView } from "expo-blur";
 import Colors from "@/constants/Colors";
@@ -28,7 +22,7 @@ const CustomHeader = () => {
             SG
           </Text>
         </TouchableOpacity>
-        <View>test</View>
+        <View></View>
       </View>
     </BlurView>
   );
