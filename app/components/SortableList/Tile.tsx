@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
 });
+
 interface TileProps {
   id: string;
   onLongPress: () => void;
