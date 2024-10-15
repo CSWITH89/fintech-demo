@@ -235,6 +235,8 @@ PODS:
     - ExpoModulesCore
   - ExpoFont (12.0.7):
     - ExpoModulesCore
+  - ExpoHaptics (13.0.1):
+    - ExpoModulesCore
   - ExpoHead (3.5.17):
     - ExpoModulesCore
   - ExpoKeepAwake (13.0.2):
@@ -1253,6 +1255,29 @@ PODS:
     - Yoga
   - react-native-safe-area-context (4.10.1):
     - React-Core
+  - react-native-skia (1.4.2):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React
+    - React-callinvoker
+    - React-Codegen
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - React-nativeconfig (0.74.2)
   - React-NativeModulesApple (0.74.2):
     - glog
@@ -1555,6 +1580,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNSVG (15.7.1):
+    - React-Core
   - SocketRocket (0.7.0)
   - Yoga (0.0.0)
 
@@ -1576,6 +1603,7 @@ DEPENDENCIES:
   - ExpoCrypto (from `../node_modules/expo-crypto/ios`)
   - ExpoFileSystem (from `../node_modules/expo-file-system/ios`)
   - ExpoFont (from `../node_modules/expo-font/ios`)
+  - ExpoHaptics (from `../node_modules/expo-haptics/ios`)
   - ExpoHead (from `../node_modules/expo-router/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
@@ -1616,6 +1644,7 @@ DEPENDENCIES:
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - "react-native-skia (from `../node_modules/@shopify/react-native-skia`)"
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -1644,6 +1673,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -1690,6 +1720,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-file-system/ios"
   ExpoFont:
     :path: "../node_modules/expo-font/ios"
+  ExpoHaptics:
+    :path: "../node_modules/expo-haptics/ios"
   ExpoHead:
     :path: "../node_modules/expo-router/ios"
   ExpoKeepAwake:
@@ -1767,6 +1799,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-mmkv"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-skia:
+    :path: "../node_modules/@shopify/react-native-skia"
   React-nativeconfig:
     :path: "../node_modules/react-native/ReactCommon"
   React-NativeModulesApple:
@@ -1823,6 +1857,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1847,6 +1883,7 @@ SPEC CHECKSUMS:
   ExpoCrypto: 156078f266bf28f80ecf5e2a9c3a0d6ffce07a1c
   ExpoFileSystem: 80bfe850b1f9922c16905822ecbf97acd711dc51
   ExpoFont: 43b69559cef3d773db57c7ae7edd3cb0aa0dc610
+  ExpoHaptics: 5a3a88971af384255baf2504f38b41189cec6984
   ExpoHead: 439510c5bec19592d5a0d78860e0cb6c59e28a34
   ExpoKeepAwake: 3b8815d9dd1d419ee474df004021c69fdd316d08
   ExpoModulesCore: b19baadc38e15895b6c3d0d61f75e7b2972f82d6
@@ -1887,6 +1924,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: bf56147c9775491e53122a94c423ac201417e326
   react-native-mmkv: 8c9a677e64a1ac89b0c6cf240feea528318b3074
   react-native-safe-area-context: dcab599c527c2d7de2d76507a523d20a0b83823d
+  react-native-skia: b9468dd4d9e0fe825506f7708a647447acb4dabb
   React-nativeconfig: 9f223cd321823afdecf59ed00861ab2d69ee0fc1
   React-NativeModulesApple: ff7efaff7098639db5631236cfd91d60abff04c0
   React-perflogger: 32ed45d9cee02cf6639acae34251590dccd30994
@@ -1915,6 +1953,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 2282cfbcf86c360d29f44ace393203afd5c6cff7
   RNReanimated: 35f9ac9c3ac42d0497ebd1cce5c39d7687a8493e
   RNScreens: b32a9ff15bea7fcdbe5dff6477bc503f792b1208
+  RNSVG: 4590aa95758149fa27c5c83e54a6a466349a1688
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: ae3c32c514802d30f687a04a6a35b348506d411f
 

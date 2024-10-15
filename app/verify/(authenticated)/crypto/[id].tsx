@@ -15,12 +15,16 @@ import { defaultStyles } from "@/constants/Styles";
 import { useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
 
+import { CartesianChart, Line } from "victory-native";
+import { useFont } from "@shopify/react-native-skia";
+
 const categories = ["Overview", "News", "Orders", "Transactions"];
 
 const Page = () => {
   const { id } = useLocalSearchParams();
   const headerHeight = useHeaderHeight();
   const [activeIndex, setActiveIndex] = useState(0);
+  const font = useFont(require("@/assets/fonts/SpaceMono-Regular.ttf"), 12);
 
   const { data } = useQuery({
     queryKey: ["info", id],
@@ -29,6 +33,11 @@ const Page = () => {
       const logo = info[+id!];
       return logo;
     },
+  });
+
+  const { data: tickers, isSuccess } = useQuery({
+    queryKey: ["tickers"],
+    queryFn: async () => await fetch(`/api/tickers`).then((res) => res.json()),
   });
 
   return (
@@ -141,9 +150,38 @@ const Page = () => {
             <View
               style={{
                 height: 500,
-                backgroundColor: "green",
               }}
-            ></View>
+            >
+              {tickers && isSuccess && (
+                <View style={[defaultStyles.block, { height: 300 }]}>
+                  <CartesianChart
+                    axisOptions={{
+                      font: font,
+                      tickCount: 5,
+                      labelOffset: { x: -2, y: 0 },
+                      labelColor: Colors.gray,
+                      formatYLabel: (v: number) => `${v}€`,
+                      formatXLabel: (ms: Date) => {
+                        const date = new Date(ms);
+                        return `${date.getHours()}:${date.getMinutes()}`;
+                      },
+                    }}
+                    data={tickers!}
+                    xKey={"timestamp" as unknown as never}
+                    yKeys={["price"] as unknown as never[]}
+                  >
+                    {({ points }: { points: any }) => (
+                      // 👇 and we'll use the Line component to render a line path.
+                      <Line
+                        points={points.price}
+                        color={Colors.primary}
+                        strokeWidth={3}
+                      />
+                    )}
+                  </CartesianChart>
+                </View>
+              )}
+            </View>
             <View style={[defaultStyles.block, { marginTop: 20 }]}>
               <Text style={styles.subtitle}>Overview</Text>
               <Text style={{ color: Colors.gray }}>
