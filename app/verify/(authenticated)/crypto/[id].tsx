@@ -17,6 +17,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { CartesianChart, Line } from "victory-native";
 import { useFont } from "@shopify/react-native-skia";
+import { format, formatDate } from "date-fns";
 
 const categories = ["Overview", "News", "Orders", "Transactions"];
 
@@ -157,13 +158,14 @@ const Page = () => {
                   <CartesianChart
                     axisOptions={{
                       font: font,
-                      tickCount: 5,
+                      //   tickCount: 5,
                       labelOffset: { x: -2, y: 0 },
                       labelColor: Colors.gray,
-                      formatYLabel: (v: number) => `${v}€`,
+                      formatYLabel: (v) => `${v}€`,
                       formatXLabel: (ms: Date) => {
-                        const date = new Date(ms);
-                        return `${date.getHours()}:${date.getMinutes()}`;
+                        const date = formatDate(new Date(ms), "MM/yy");
+
+                        return date;
                       },
                     }}
                     data={tickers!}
