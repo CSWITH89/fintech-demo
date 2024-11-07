@@ -6,26 +6,45 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  TextInput,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useHeaderHeight } from "@react-navigation/elements";
 import Colors from "@/constants/Colors";
 import { defaultStyles } from "@/constants/Styles";
 import { useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
+import { CartesianChart, Line, useChartPressState } from "victory-native";
+import { Circle, useFont } from "@shopify/react-native-skia";
+import { formatDate } from "date-fns";
+import * as Haptics from "expo-haptics";
+import Animated, {
+  SharedValue,
+  useAnimatedProps,
+} from "react-native-reanimated";
+const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
-import { CartesianChart, Line } from "victory-native";
-import { useFont } from "@shopify/react-native-skia";
-import { format, formatDate } from "date-fns";
-
-const categories = ["Overview", "News", "Orders", "Transactions"];
+function ToolTip({ x, y }: { x: SharedValue<number>; y: SharedValue<number> }) {
+  return <Circle cx={x} cy={y} r={8} color={Colors.primary} />;
+}
 
 const Page = () => {
   const { id } = useLocalSearchParams();
   const headerHeight = useHeaderHeight();
   const [activeIndex, setActiveIndex] = useState(0);
   const font = useFont(require("@/assets/fonts/SpaceMono-Regular.ttf"), 12);
+  const categories = ["Overview", "News", "Orders", "Transactions"];
+
+  const INIT_STATE = { x: 0, y: { price: 0 } } as const;
+  const { state, isActive } = useChartPressState(INIT_STATE);
+
+  useEffect(() => {
+    console.log("isActive", isActive);
+    if (isActive) {
+      Haptics.selectionAsync();
+    }
+  }, [isActive]);
 
   const { data } = useQuery({
     queryKey: ["info", id],
@@ -39,6 +58,13 @@ const Page = () => {
   const { data: tickers, isSuccess } = useQuery({
     queryKey: ["tickers"],
     queryFn: async () => await fetch(`/api/tickers`).then((res) => res.json()),
+  });
+
+  const animatedText = useAnimatedProps(() => {
+    return {
+      text: "111",
+      defaultValue: "2332432432",
+    };
   });
 
   return (
@@ -147,15 +173,66 @@ const Page = () => {
         )}
         renderItem={(item) => (
           <>
-            {/* CHART  */}
             <View
-              style={{
-                height: 500,
-              }}
+              style={[
+                defaultStyles.block,
+                {
+                  height: 500,
+                },
+              ]}
             >
               {tickers && isSuccess && (
-                <View style={[defaultStyles.block, { height: 300 }]}>
+                <>
+                  {!isActive && (
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 30,
+                          fontWeight: "bold",
+                          color: Colors.dark,
+                        }}
+                      >
+                        {tickers[tickers.length - 1].price}€
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          fontWeight: "bold",
+                          color: Colors.gray,
+                        }}
+                      >
+                        Today
+                      </Text>
+                    </View>
+                  )}
+                  {isActive && (
+                    <View>
+                      <AnimatedTextInput
+                        editable={false}
+                        underlineColorAndroid={"transparent"}
+                        style={{
+                          fontSize: 30,
+                          fontWeight: "bold",
+                          color: Colors.dark,
+                        }}
+                        animatedProps={animatedText}
+                      ></AnimatedTextInput>
+                      <AnimatedTextInput
+                        editable={false}
+                        underlineColorAndroid={"transparent"}
+                        style={{
+                          fontSize: 18,
+                          fontWeight: "bold",
+                          color: Colors.gray,
+                        }}
+                      >
+                        TEST
+                      </AnimatedTextInput>
+                    </View>
+                  )}
+
                   <CartesianChart
+                    chartPressState={state as unknown as never}
                     axisOptions={{
                       font: font,
                       //   tickCount: 5,
@@ -173,15 +250,22 @@ const Page = () => {
                     yKeys={["price"] as unknown as never[]}
                   >
                     {({ points }: { points: any }) => (
-                      // 👇 and we'll use the Line component to render a line path.
-                      <Line
-                        points={points.price}
-                        color={Colors.primary}
-                        strokeWidth={3}
-                      />
+                      <>
+                        <Line
+                          points={points.price}
+                          color={Colors.primary}
+                          strokeWidth={3}
+                        />
+                        {isActive && (
+                          <ToolTip
+                            x={state.x.position}
+                            y={state.y.price.position}
+                          />
+                        )}
+                      </>
                     )}
                   </CartesianChart>
-                </View>
+                </>
               )}
             </View>
             <View style={[defaultStyles.block, { marginTop: 20 }]}>
