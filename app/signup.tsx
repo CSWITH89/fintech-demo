@@ -27,7 +27,7 @@ const signup = () => {
       await signUp!.create({
         phoneNumber: fullPhoneNumber,
       });
-      signUp!.preparePhoneNumberVerification();
+      await signUp!.preparePhoneNumberVerification();
       router.push({
         pathname: "/verify/[phone]",
         params: { phone: fullPhoneNumber },
