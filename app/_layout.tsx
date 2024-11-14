@@ -76,7 +76,7 @@ const InitialLayout = () => {
     console.log("isSignedIn", isSignedIn);
     if (!isLoaded) return;
 
-    const inAuthGroup = segments[0] === "(authenticated)";
+    const inAuthGroup = segments.includes("(authenticated)");
 
     // if (isSignedIn && !inAuthGroup) {
     //   router.replace("/(authenticated)/(tabs)/home");
