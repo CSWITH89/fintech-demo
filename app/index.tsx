@@ -9,6 +9,9 @@ import Colors from "@/constants/Colors";
 const Page = () => {
   const [assets] = useAssets([require("@/assets/videos/intro.mp4")]);
 
+  // TODO: seperation of UI and logic
+  // TODO: component extraction
+
   return (
     <View style={styles.container}>
       {assets ? (
